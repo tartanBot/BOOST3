@@ -38,21 +38,21 @@ def talker(data):
         print("Longitude Array = ", long_arr)
         # rospy.init_node('talker', anonymous=True)
      
-        rate = rospy.Rate(10) # 10hz
-        while not rospy.is_shutdown():
-        
-            path = Path()
-            for i in range(len(lat_arr)):
-                pose = Pose()
-                x,y,z = pm.geodetic2enu(lat_arr[i],long_arr[i],0,start_lat,start_lon,0)
-                pose.position = [x,y,z]
-                pose.orientation = [0.0,1.0,2.0,3.0]
-                path.poses.append(pose)
+        rate = rospy.Rate(0.00001) # Rate is in Hz
+        # while not rospy.is_shutdown():
+        # # 
+        path = Path()
+        for i in range(len(lat_arr)):
+            pose = Pose()
+            x,y,z = pm.geodetic2enu(lat_arr[i],long_arr[i],0,start_lat,start_lon,0)
+            pose.position = [x,y,z]
+            pose.orientation = [0.0,1.0,2.0,3.0]
+            path.poses.append(pose)
 
-            pub.publish(path)
-            rospy.loginfo(path)        
+        pub.publish(path)
+        rospy.loginfo(path)        
 
-            rate.sleep()
+        rate.sleep()
 
 def planner():
     rospy.init_node('planner', anonymous=True)
