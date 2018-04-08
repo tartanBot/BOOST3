@@ -11,5 +11,13 @@ map_json = response.json()
 # print(json.dumps(map_json["routes"][0]["legs"][0]["steps"], indent=4, sort_keys=True)) 
 print("START_LOCATION = " + json.dumps(map_json["routes"][0]["legs"][0]["steps"][0]["start_location"], indent=4, sort_keys=True))
 # print(json.dumps(map_json,indent = 4, sort_keys = True))
+lat_arr = [] 
+long_arr = [] 
 for step in range(len(map_json["routes"][0]["legs"][0]["steps"])):
+	lat_arr.append(float(map_json["routes"][0]["legs"][0]["steps"][step]["end_location"]['lat']))
+	long_arr.append(float(map_json["routes"][0]["legs"][0]["steps"][step]["end_location"]['lng']))
+	# print(map_json["routes"][0]["legs"][0]["steps"][step]["end_location"]['lat'])#, indent=4, sort_keys=True))
 	print(json.dumps(map_json["routes"][0]["legs"][0]["steps"][step]["end_location"], indent=4, sort_keys=True))
+
+print("Latitude Array = ",lat_arr)
+print("Longitude Array = ", long_arr)
