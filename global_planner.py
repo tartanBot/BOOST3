@@ -12,6 +12,7 @@ pub = rospy.Publisher('chatter', Path, queue_size = 10)
 
 def talker(data):
     if data.status >10 or True:
+    	# print("HERE")
         origin = str(data.latitude)+'%2C'+str(data.longitude)
         # origin = 'University+Center,+Forbes+Avenue,+Pittsburgh,+PA' # Enter Place name as shown or Lat,Lon as "Lat%2CLong"
         destination = 'Posner+Hall,+Pittsburgh,+PA+15213' # Enter Place name as shown or Lat,Lon as "Lat%2CLong"
@@ -38,7 +39,7 @@ def talker(data):
         print("Longitude Array = ", long_arr)
         # rospy.init_node('talker', anonymous=True)
      
-        rate = rospy.Rate(0.00001) # Rate is in Hz
+        rate = rospy.Rate(1) # 10hz
         # while not rospy.is_shutdown():
         # # 
         path = Path()
