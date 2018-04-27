@@ -13,15 +13,32 @@ from sensor_msgs.msg import NavSatFix
 
 pub = rospy.Publisher('chatter', Path, queue_size = 10)
 SEQ = 0
+RESPONSE_FLAG = True
+RESPONSE = None
+def get_response(url):
+	print("Requesting URL")
+	global RESPONSE_FLAG
+	RESPONSE_FLAG = False
+	return requests.get(url)
+
 def talker(data):
     global SEQ
+    global RESPONSE_FLAG
+    global RESPONSE
     if data.status >10 or True:
         origin = str(data.latitude)+'%2C'+str(data.longitude)
         # origin = 'University+Center,+Forbes+Avenue,+Pittsburgh,+PA' # Enter Place name as shown or Lat,Lon as "Lat%2CLong"
         destination = 'Posner+Hall,+Pittsburgh,+PA+15213' # Enter Place name as shown or Lat,Lon as "Lat%2CLong"
-        key = 'AIzaSyAfG60NGmeaR5TaOdwliyG18ux_VUj68Rk' # Dont change this Key. Unless you apply for a new key yourself.
+        # key = 'AIzaSyAfG60NGmeaR5TaOdwliyG18ux_VUj68Rk' # Dont change this Key. Unless you apply for a new key yourself.
+        # key = 'AIzaSyDC5eFiln_Zd3fczygDkpSeCvSVXXJ9OLU'
+        key = 'AIzaSyB4YW2GlEbZAvwDUPg1QUamsGP9qn-ojhw' 
         url = 'https://maps.googleapis.com/maps/api/directions/json?&mode=walking&origin='+origin+'&destination='+destination+'&key='+key    
-        response = requests.get(url)    
+        # response = requests.get(url)
+        if RESPONSE_FLAG:    
+        	response = get_response(url)
+        	RESPONSE = response
+        else:
+        	response = RESPONSE
         map_json = response.json()
         print("START_LOCATION = " + json.dumps(map_json["routes"][0]["legs"][0]["steps"][0]["start_location"], indent=4, sort_keys=True))
         # print(json.dumps(map_json,indent = 4, sort_keys = True))
@@ -42,7 +59,7 @@ def talker(data):
         print("Longitude Array = ", long_arr)
         # rospy.init_node('talker', anonymous=True)
      
-        rate = rospy.Rate(1) # 10hz
+        rate = rospy.Rate(20) # 10hz
         # while not rospy.is_shutdown():
         # # 
         # print(geometry_msgs.msg.PoseStamped())
